@@ -29,8 +29,6 @@ const getInstance = async (username:string, password:string) => {
     const instance = axios.create(config);
 
     instance.interceptors.response.use(response => response, async (error) => {
-        console.log(error.response);
-        
         if(error.response && (error.response.status === 401 || error.response.status === 403)){
             try {
                 const auth = await Authentication(username, password);
@@ -46,20 +44,8 @@ const getInstance = async (username:string, password:string) => {
     return instance;
 }
 
-const sleep = async (ms: number) => {
+export const sleep = async (ms: number) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-(async () => {
-    const instance = await getInstance("sam", "password");
-    console.log("first");
-    
-    await instance.get('/projects');  
-
-    await sleep(5000);
-    console.log("second");    
-    await instance.get('/projects');  
-
-
-    
-})();
+export default getInstance;
